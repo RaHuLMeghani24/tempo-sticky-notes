@@ -20,7 +20,7 @@ The application is split into small, focused modules. App is responsible for com
 
 Individual note interactions are isolated inside StickyNote. Pointer events are used for dragging and resizing so the behavior works consistently across modern desktop browsers. The note component updates the DOM directly during active dragging or resizing for smoother interaction, then commits the final position or size back to React state when the pointer is released.
 
-Shared logic is kept outside components. Note dimensions, layout values, and color themes live in constants. Rectangle overlap and clamping helpers live in utils/geometry. Note placement logic lives in utils/notePlacement. Persistence is accessed through api/notesApi, which behaves like an asynchronous REST API while using localStorage as a mock backing store. This keeps the UI independent from the storage implementation and makes it easier to replace the mock with a real backend later.
+Shared logic is kept outside components. Note dimensions, layout values, and color themes live in constants. Rectangle overlap and clamping helpers live in utils/geometry. Note placement logic lives in utils/notePlacement. Persistence is accessed through api/stickyNotesApi, which behaves like an asynchronous REST API while using localStorage as a mock backing store. This keeps the UI independent from the storage implementation and makes it easier to replace the mock with a real backend later.
 
 ## Tech Stack
 
