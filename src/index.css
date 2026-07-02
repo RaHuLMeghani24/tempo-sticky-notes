@@ -349,3 +349,44 @@ textarea {
 .note-resize-handle:active {
   transform: scale(1);
 }
+
+.toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.toolbar-button-delete {
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  border-radius: 999px;
+  padding: 11px 18px;
+  background: rgba(254, 242, 242, 0.85);
+  color: #dc2626;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 18px rgba(239, 68, 68, 0.08);
+  transition:
+    transform 160ms ease,
+    background 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.toolbar-button-delete:hover {
+  background: #fee2e2;
+  border-color: rgba(220, 38, 38, 0.65);
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(239, 68, 68, 0.16);
+}
+
+.toolbar-button-delete:active {
+  transform: translateY(0);
+}
+
+.toolbar-button-delete:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}

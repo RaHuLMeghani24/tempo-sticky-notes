@@ -6,7 +6,7 @@ import {
 } from "../constants/stickyNoteThemes";
 import type { Note, NoteUpdate } from "../types/note";
 import { getNextNotePosition } from "../utils/notePlacement";
-import { getStoredNotes, saveStoredNotes } from "../utils/noteStorage";
+import { getStoredNotes, saveStoredNotes } from "../utils/notesStorage";
 
 interface UseNotesOptions {
   getBoardWidth: () => number;
@@ -62,6 +62,16 @@ export const useNotes = ({ getBoardWidth }: UseNotesOptions) => {
     );
   }, []);
 
+  const deleteAllNotes = useCallback(() => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete all notes? This cannot be undone."
+    );
+
+    if (!confirmed) return;
+
+    setNotes([]);
+  }, []);
+
   const bringNoteToFront = useCallback((noteId: string) => {
     setNotes((previousNotes) => {
       const highestZ =
@@ -80,6 +90,7 @@ export const useNotes = ({ getBoardWidth }: UseNotesOptions) => {
     createNote,
     updateNote,
     deleteNote,
+    deleteAllNotes,
     bringNoteToFront,
   };
 };

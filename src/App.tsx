@@ -10,11 +10,24 @@ export default function App() {
     return boardRef.current?.clientWidth ?? window.innerWidth;
   }, []);
 
-  const { notes, createNote, updateNote, deleteNote, bringNoteToFront } =useNotes({getBoardWidth});
+  const {
+    notes,
+    createNote,
+    updateNote,
+    deleteNote,
+    deleteAllNotes,
+    bringNoteToFront,
+  } = useNotes({
+    getBoardWidth,
+  });
 
   return (
     <div className="app-shell">
-      <Toolbar onCreate={createNote} />
+      <Toolbar
+        onCreate={createNote}
+        onDeleteAll={deleteAllNotes}
+        hasNotes={notes.length > 0}
+      />
 
       <Board
         boardRef={boardRef}
