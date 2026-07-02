@@ -140,3 +140,38 @@ button {
   font-size: 14px;
   line-height: 1.5;
 }
+
+.dynamic-note {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  border-radius: 18px;
+  box-shadow:
+    0 18px 38px rgba(15, 23, 42, 0.16),
+    0 2px 8px rgba(15, 23, 42, 0.08);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  user-select: none;
+}
+
+.dynamic-note::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.35),
+    rgba(255, 255, 255, 0.04)
+  );
+}
+
+.note-placeholder {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  padding: 18px;
+  color: rgba(31, 41, 55, 0.65);
+  font-size: 14px;
+  font-weight: 600;
+}

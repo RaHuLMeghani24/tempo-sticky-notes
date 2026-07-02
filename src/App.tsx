@@ -1,15 +1,21 @@
+import { useCallback, useRef } from "react";
 import Board from "./components/Board";
 import Toolbar from "./components/Toolbar";
+import { useNotes } from "./hooks/useNotes";
 
 export default function App() {
-  const handleCreateNote = () => {
-    // TODO: Implement note creation logic here
-  };
+  const boardRef = useRef<HTMLElement | null>(null);
+
+  const getBoardWidth = useCallback(() => {
+    return boardRef.current?.clientWidth ?? window.innerWidth;
+  }, []);
+
+  const { notes, createNote } = useNotes({ getBoardWidth });
 
   return (
     <div className="app-shell">
-      <Toolbar onCreate={handleCreateNote} />
-      <Board />
+      <Toolbar onCreate={createNote} />
+      <Board boardRef={boardRef} notes={notes} />
     </div>
   );
 }
