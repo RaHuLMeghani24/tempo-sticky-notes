@@ -12,6 +12,8 @@ export default function App() {
 
   const {
     notes,
+    isLoading,
+    isSaving,
     createNote,
     updateNote,
     deleteNote,
@@ -27,15 +29,21 @@ export default function App() {
         onCreate={createNote}
         onDeleteAll={deleteAllNotes}
         hasNotes={notes.length > 0}
+        isLoading={isLoading}
+        isSaving={isSaving}
       />
 
-      <Board
-        boardRef={boardRef}
-        notes={notes}
-        onUpdateNote={updateNote}
-        onDeleteNote={deleteNote}
-        onFocusNote={bringNoteToFront}
-      />
+      {isLoading ? (
+        <div className="loading-state">Loading notes...</div>
+      ) : (
+        <Board
+          boardRef={boardRef}
+          notes={notes}
+          onUpdateNote={updateNote}
+          onDeleteNote={deleteNote}
+          onFocusNote={bringNoteToFront}
+        />
+      )}
     </div>
   );
 }

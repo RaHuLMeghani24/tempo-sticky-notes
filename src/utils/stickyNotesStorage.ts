@@ -10,11 +10,13 @@ export const getStoredNotes = (): Note[] => {
   try {
     return JSON.parse(savedNotes) as Note[];
   } catch {
+    // Invalid saved data should not break the application on page load.
     return [];
   }
 };
 
 export const saveStoredNotes = (notes: Note[]): void => {
+  // Removing the key keeps localStorage clean when the board is empty.
   if (notes.length === 0) {
     localStorage.removeItem(STORAGE_KEY);
     return;

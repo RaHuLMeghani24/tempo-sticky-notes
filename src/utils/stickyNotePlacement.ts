@@ -10,7 +10,8 @@ export const getNextNotePosition = (existingNotes: Note[], boardWidth: number): 
   const availableWidth = Math.max(DEFAULT_NOTE_SIZE.width, boardWidth - NOTE_LAYOUT.boardPadding * 2);
 
   const columnsPerRow = Math.max(1, Math.floor((availableWidth + NOTE_LAYOUT.gap) / (DEFAULT_NOTE_SIZE.width + NOTE_LAYOUT.gap)));
-
+  // New notes are placed in a simple grid based on the current board width.
+  // Existing manually moved notes are not rearranged when the browser resizes.
   const index = existingNotes.length;
   const row = Math.floor(index / columnsPerRow);
   const col = index % columnsPerRow;

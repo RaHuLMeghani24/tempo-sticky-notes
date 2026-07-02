@@ -18,7 +18,7 @@ export default function Board({boardRef,notes,onUpdateNote,onDeleteNote,onFocusN
     if (!trashRef.current) return;
 
     const trashRect = trashRef.current.getBoundingClientRect();
-
+    // The note is deleted only after dragging ends, not while hovering over the trash zone.
     if (doRectsOverlap(noteRect, trashRect)) {
       onDeleteNote(noteId);
     }

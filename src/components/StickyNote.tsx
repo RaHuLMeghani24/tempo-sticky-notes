@@ -71,7 +71,8 @@ export default function StickyNote({note,onUpdateNote,onFocusNote,onDragEnd,}: S
       x: nextX,
       y: nextY,
     };
-
+    // Apply movement directly to the DOM during dragging for smoother feedback.
+    // React state is updated once when the pointer is released.
     elementRef.current.style.transform = `translate3d(${nextX}px, ${nextY}px, 0)`;
   };
 
@@ -136,7 +137,8 @@ export default function StickyNote({note,onUpdateNote,onFocusNote,onDragEnd,}: S
       width: nextWidth,
       height: nextHeight,
     };
-
+    // Like dragging, resize feedback is applied immediately and committed
+    // to React state only at the end of the interaction.
     elementRef.current.style.width = `${nextWidth}px`;
     elementRef.current.style.height = `${nextHeight}px`;
   };
