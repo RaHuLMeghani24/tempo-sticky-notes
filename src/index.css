@@ -153,6 +153,7 @@ textarea {
     0 2px 8px rgba(15, 23, 42, 0.08);
   border: 1px solid rgba(15, 23, 42, 0.08);
   user-select: none;
+  touch-action: none;
 }
 
 .dynamic-note::before {
@@ -187,6 +188,7 @@ textarea {
   line-height: 1.45;
   font-weight: 500;
   cursor: text;
+  padding: 42px 16px 16px;
 }
 
 .dynamic-textarea::placeholder {
@@ -200,4 +202,35 @@ textarea {
 .dynamic-textarea::-webkit-scrollbar-thumb {
   background: rgba(15, 23, 42, 0.18);
   border-radius: 999px;
+}
+
+.note-drag-handle {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 5;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  color: rgba(15, 23, 42, 0.65);
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
+  transition:
+    background 150ms ease,
+    transform 150ms ease;
+}
+
+.note-drag-handle:hover {
+  background: rgba(255, 255, 255, 0.75);
+  transform: scale(1.06);
+}
+
+.note-drag-handle:active {
+  cursor: grabbing;
 }

@@ -6,9 +6,10 @@ interface BoardProps {
   boardRef: RefObject<HTMLElement | null>;
   notes: Note[];
   onUpdateNote: (noteId: string, update: NoteUpdate) => void;
+  onFocusNote: (noteId: string) => void;
 }
 
-export default function Board({ boardRef, notes, onUpdateNote }: BoardProps) {
+export default function Board({boardRef, notes, onUpdateNote, onFocusNote}: BoardProps) {
   return (
     <main ref={boardRef} className="board">
       <div className="board-canvas">
@@ -23,6 +24,7 @@ export default function Board({ boardRef, notes, onUpdateNote }: BoardProps) {
               key={note.id}
               note={note}
               onUpdateNote={onUpdateNote}
+              onFocusNote={onFocusNote}
             />
           ))
         )}

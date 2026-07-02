@@ -43,9 +43,23 @@ export const useNotes = ({ getBoardWidth }: UseNotesOptions) => {
     );
   }, []);
 
+  const bringNoteToFront = useCallback((noteId: string) => {
+    setNotes((previousNotes) => {
+      const highestZ =
+        previousNotes.length === 0
+          ? 1
+          : Math.max(...previousNotes.map((note) => note.zIndex));
+
+      return previousNotes.map((note) =>
+        note.id === noteId ? { ...note, zIndex: highestZ + 1 } : note
+      );
+    });
+  }, []);
+
   return {
     notes,
     createNote,
     updateNote,
+    bringNoteToFront,
   };
 };
