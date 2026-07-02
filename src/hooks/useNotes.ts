@@ -1,15 +1,28 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { DEFAULT_NOTE_SIZE } from "../constants/stickyNoteConfig";
-import { getRandomNoteTheme } from "../constants/stickyNoteThemes";
+import {
+  getFallbackNoteTheme,
+  getRandomNoteTheme,
+} from "../constants/stickyNoteThemes";
 import type { Note, NoteUpdate } from "../types/note";
 import { getNextNotePosition } from "../utils/notePlacement";
+import { getStoredNotes, saveStoredNotes } from "../utils/noteStorage";
 
 interface UseNotesOptions {
   getBoardWidth: () => number;
 }
 
 export const useNotes = ({ getBoardWidth }: UseNotesOptions) => {
-  const [notes, setNotes] = useState<Note[]>([]);
+  const [notes, setNotes] = useState<Note[]>(() => {
+    return getStoredNotes().map((note) => ({
+      ...note,
+      color: note.color || getFallbackNoteTheme(),
+    }));
+  });
+
+  useEffect(() => {
+    saveStoredNotes(notes);
+  }, [notes]);
 
   const createNote = useCallback(() => {
     setNotes((previousNotes) => {
