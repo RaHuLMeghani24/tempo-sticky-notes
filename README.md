@@ -30,9 +30,27 @@ Shared logic is kept outside components. Note dimensions, layout values, and col
 - Plain CSS
 - Mocked async API backed by localStorage
 
-## Getting Started
+## Build and Run
 
 Install dependencies:
 
 ```bash
 npm install
+```
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+The app will be available at the local URL printed in the terminal, usually:
+
+```txt
+http://localhost:5173
+```
+
+## Requirements
+
+- Node.js 18 or newer
+- npm
