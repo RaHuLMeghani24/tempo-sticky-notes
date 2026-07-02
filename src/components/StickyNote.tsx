@@ -1,5 +1,7 @@
 import { useEffect, useRef, type PointerEvent } from "react";
+import { NOTE_SIZE_LIMITS } from "../constants/stickyNoteConfig";
 import type { Note, NoteUpdate } from "../types/note";
+import { clamp } from "../utils/geometry";
 
 interface StickyNoteProps {
   note: Note;
@@ -8,12 +10,26 @@ interface StickyNoteProps {
   onDragEnd: (noteId: string, noteRect: DOMRect) => void;
 }
 
-export default function StickyNote({note, onUpdateNote,onFocusNote,onDragEnd,}: StickyNoteProps) {
+export default function StickyNote({note,onUpdateNote,onFocusNote,onDragEnd,}: StickyNoteProps) {
   const elementRef = useRef<HTMLElement>(null);
 
   const isDragging = useRef(false);
+  const isResizing = useRef(false);
+
   const dragStart = useRef({ x: 0, y: 0 });
   const currentPosition = useRef({ x: note.x, y: note.y });
+
+  const resizeStart = useRef({
+    pointerX: 0,
+    pointerY: 0,
+    width: note.width,
+    height: note.height,
+  });
+
+  const currentSize = useRef({
+    width: note.width,
+    height: note.height,
+  });
 
   useEffect(() => {
     currentPosition.current = {
@@ -21,6 +37,13 @@ export default function StickyNote({note, onUpdateNote,onFocusNote,onDragEnd,}: 
       y: note.y,
     };
   }, [note.x, note.y]);
+
+  useEffect(() => {
+    currentSize.current = {
+      width: note.width,
+      height: note.height,
+    };
+  }, [note.width, note.height]);
 
   const handleDragPointerDown = (event: PointerEvent<HTMLButtonElement>) => {
     if (event.button !== 0) return;
@@ -73,6 +96,66 @@ export default function StickyNote({note, onUpdateNote,onFocusNote,onDragEnd,}: 
     }
   };
 
+  const handleResizePointerDown = (event: PointerEvent<HTMLButtonElement>) => {
+    if (event.button !== 0) return;
+
+    event.stopPropagation();
+
+    onFocusNote(note.id);
+    isResizing.current = true;
+
+    resizeStart.current = {
+      pointerX: event.clientX,
+      pointerY: event.clientY,
+      width: currentSize.current.width,
+      height: currentSize.current.height,
+    };
+
+    event.currentTarget.setPointerCapture(event.pointerId);
+  };
+
+  const handleResizePointerMove = (event: PointerEvent<HTMLButtonElement>) => {
+    if (!isResizing.current || !elementRef.current) return;
+
+    const deltaX = event.clientX - resizeStart.current.pointerX;
+    const deltaY = event.clientY - resizeStart.current.pointerY;
+
+    const nextWidth = clamp(
+      resizeStart.current.width + deltaX,
+      NOTE_SIZE_LIMITS.minWidth,
+      NOTE_SIZE_LIMITS.maxWidth
+    );
+
+    const nextHeight = clamp(
+      resizeStart.current.height + deltaY,
+      NOTE_SIZE_LIMITS.minHeight,
+      NOTE_SIZE_LIMITS.maxHeight
+    );
+
+    currentSize.current = {
+      width: nextWidth,
+      height: nextHeight,
+    };
+
+    elementRef.current.style.width = `${nextWidth}px`;
+    elementRef.current.style.height = `${nextHeight}px`;
+  };
+
+  const handleResizePointerUp = (event: PointerEvent<HTMLButtonElement>) => {
+    if (!isResizing.current) return;
+
+    isResizing.current = false;
+
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+
+    onUpdateNote(note.id, {
+      width: currentSize.current.width,
+      height: currentSize.current.height,
+    });
+  };
+
   return (
     <article
       ref={elementRef}
@@ -83,7 +166,7 @@ export default function StickyNote({note, onUpdateNote,onFocusNote,onDragEnd,}: 
         zIndex: note.zIndex,
         transform: `translate3d(${note.x}px, ${note.y}px, 0)`,
         backgroundColor: note.color.bg,
-        willChange: "transform",
+        willChange: "transform, width, height",
       }}
       onPointerDown={() => onFocusNote(note.id)}
     >
@@ -117,6 +200,17 @@ export default function StickyNote({note, onUpdateNote,onFocusNote,onDragEnd,}: 
             text: event.target.value,
           })
         }
+      />
+
+      <button
+        type="button"
+        className="note-resize-handle"
+        title="Resize note"
+        aria-label="Resize note"
+        onPointerDown={handleResizePointerDown}
+        onPointerMove={handleResizePointerMove}
+        onPointerUp={handleResizePointerUp}
+        onPointerCancel={handleResizePointerUp}
       />
     </article>
   );

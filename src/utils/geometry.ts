@@ -13,3 +13,7 @@ export const doRectsOverlap = (a: RectLike, b: RectLike): boolean => {
     a.bottom > b.top
   );
 };
+
+export const clamp = (value: number, min: number, max: number): number => {
+  return Math.min(max, Math.max(min, value));
+};

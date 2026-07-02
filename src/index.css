@@ -189,7 +189,7 @@ textarea {
   line-height: 1.45;
   font-weight: 500;
   cursor: text;
-  padding: 42px 16px 16px;
+  padding: 42px 28px 24px 16px;
 }
 
 .dynamic-textarea::placeholder {
@@ -300,4 +300,52 @@ textarea {
   font-size: 12px;
   font-weight: 500;
   color: rgba(185, 28, 28, 0.72);
+}
+
+.note-resize-handle {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  z-index: 6;
+
+  width: 18px;
+  height: 18px;
+  border: 0;
+  border-radius: 6px;
+
+  cursor: nwse-resize;
+
+  background:
+    linear-gradient(
+      135deg,
+      transparent 0 45%,
+      rgba(15, 23, 42, 0.28) 45% 55%,
+      transparent 55%
+    ),
+    linear-gradient(
+      135deg,
+      transparent 0 62%,
+      rgba(15, 23, 42, 0.28) 62% 72%,
+      transparent 72%
+    ),
+    rgba(255, 255, 255, 0.48);
+
+  backdrop-filter: blur(8px);
+  box-shadow:
+    0 3px 8px rgba(15, 23, 42, 0.14),
+    inset 0 1px 1px rgba(255, 255, 255, 0.45);
+
+  transition:
+    transform 150ms ease,
+    background-color 150ms ease,
+    opacity 150ms ease;
+}
+
+.note-resize-handle:hover {
+  transform: scale(1.12);
+  background-color: rgba(255, 255, 255, 0.72);
+}
+
+.note-resize-handle:active {
+  transform: scale(1);
 }
