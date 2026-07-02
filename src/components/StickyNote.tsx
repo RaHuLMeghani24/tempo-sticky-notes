@@ -1,10 +1,11 @@
-import type { Note } from "../types/note";
+import type { Note, NoteUpdate } from "../types/note";
 
 interface StickyNoteProps {
   note: Note;
+  onUpdateNote: (noteId: string, update: NoteUpdate) => void;
 }
 
-export default function StickyNote({ note }: StickyNoteProps) {
+export default function StickyNote({ note, onUpdateNote }: StickyNoteProps) {
   return (
     <article
       className="dynamic-note"
@@ -16,7 +17,19 @@ export default function StickyNote({ note }: StickyNoteProps) {
         backgroundColor: note.color.bg,
       }}
     >
-      <p className="note-placeholder">New note</p>
+      <textarea
+        className="dynamic-textarea"
+        value={note.text}
+        placeholder="Type something..."
+        style={{
+          color: note.color.text,
+          backgroundColor: note.color.bg,
+        }}
+        onChange={(event) => onUpdateNote(note.id, {
+            text: event.target.value,
+          })
+        }
+      />
     </article>
   );
 }

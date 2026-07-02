@@ -10,12 +10,13 @@ export default function App() {
     return boardRef.current?.clientWidth ?? window.innerWidth;
   }, []);
 
-  const { notes, createNote } = useNotes({ getBoardWidth });
+  const { notes, createNote, updateNote } = useNotes({ getBoardWidth });
 
   return (
     <div className="app-shell">
       <Toolbar onCreate={createNote} />
-      <Board boardRef={boardRef} notes={notes} />
+
+      <Board boardRef={boardRef} notes={notes} onUpdateNote={updateNote} />
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import { DEFAULT_NOTE_SIZE } from "../constants/stickyNoteConfig";
 import { getRandomNoteTheme } from "../constants/stickyNoteThemes";
-import type { Note } from "../types/note";
+import type { Note, NoteUpdate } from "../types/note";
 import { getNextNotePosition } from "../utils/notePlacement";
 
 interface UseNotesOptions {
@@ -35,8 +35,17 @@ export const useNotes = ({ getBoardWidth }: UseNotesOptions) => {
     });
   }, [getBoardWidth]);
 
+  const updateNote = useCallback((noteId: string, update: NoteUpdate) => {
+    setNotes((previousNotes) =>
+      previousNotes.map((note) =>
+        note.id === noteId ? { ...note, ...update } : note
+      )
+    );
+  }, []);
+
   return {
     notes,
     createNote,
+    updateNote,
   };
 };
