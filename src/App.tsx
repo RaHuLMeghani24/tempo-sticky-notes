@@ -10,9 +10,7 @@ export default function App() {
     return boardRef.current?.clientWidth ?? window.innerWidth;
   }, []);
 
-  const { notes, createNote, updateNote, bringNoteToFront } = useNotes({
-    getBoardWidth,
-  });
+  const { notes, createNote, updateNote, deleteNote, bringNoteToFront } =useNotes({getBoardWidth});
 
   return (
     <div className="app-shell">
@@ -22,6 +20,7 @@ export default function App() {
         boardRef={boardRef}
         notes={notes}
         onUpdateNote={updateNote}
+        onDeleteNote={deleteNote}
         onFocusNote={bringNoteToFront}
       />
     </div>

@@ -5,9 +5,10 @@ interface StickyNoteProps {
   note: Note;
   onUpdateNote: (noteId: string, update: NoteUpdate) => void;
   onFocusNote: (noteId: string) => void;
+  onDragEnd: (noteId: string, noteRect: DOMRect) => void;
 }
 
-export default function StickyNote({note,onUpdateNote,onFocusNote,}: StickyNoteProps) {
+export default function StickyNote({note, onUpdateNote,onFocusNote,onDragEnd,}: StickyNoteProps) {
   const elementRef = useRef<HTMLElement>(null);
 
   const isDragging = useRef(false);
@@ -60,57 +61,63 @@ export default function StickyNote({note,onUpdateNote,onFocusNote,}: StickyNoteP
       event.currentTarget.releasePointerCapture(event.pointerId);
     }
 
+    const noteRect = elementRef.current?.getBoundingClientRect();
+
     onUpdateNote(note.id, {
       x: currentPosition.current.x,
       y: currentPosition.current.y,
     });
+
+    if (noteRect) {
+      onDragEnd(note.id, noteRect);
+    }
   };
 
   return (
-        <article
-            ref={elementRef}
-            className="dynamic-note"
-            style={{
-                width: `${note.width}px`,
-                height: `${note.height}px`,
-                zIndex: note.zIndex,
-                transform: `translate3d(${note.x}px, ${note.y}px, 0)`,
-                backgroundColor: note.color.bg,
-                willChange: "transform",
-            }}
-            onPointerDown={() => onFocusNote(note.id)}
-            >
-            <button
-                type="button"
-                className="note-drag-handle"
-                title="Drag note"
-                aria-label="Drag note"
-                onPointerDown={handleDragPointerDown}
-                onPointerMove={handleDragPointerMove}
-                onPointerUp={handleDragPointerUp}
-                onPointerCancel={handleDragPointerUp}
-            >
-                ⠿
-            </button>
+    <article
+      ref={elementRef}
+      className="dynamic-note"
+      style={{
+        width: `${note.width}px`,
+        height: `${note.height}px`,
+        zIndex: note.zIndex,
+        transform: `translate3d(${note.x}px, ${note.y}px, 0)`,
+        backgroundColor: note.color.bg,
+        willChange: "transform",
+      }}
+      onPointerDown={() => onFocusNote(note.id)}
+    >
+      <button
+        type="button"
+        className="note-drag-handle"
+        title="Drag note"
+        aria-label="Drag note"
+        onPointerDown={handleDragPointerDown}
+        onPointerMove={handleDragPointerMove}
+        onPointerUp={handleDragPointerUp}
+        onPointerCancel={handleDragPointerUp}
+      >
+        ⠿
+      </button>
 
-            <textarea
-                className="dynamic-textarea"
-                value={note.text}
-                placeholder="Type something..."
-                style={{
-                color: note.color.text,
-                backgroundColor: note.color.bg,
-                }}
-                onPointerDown={(event) => {
-                event.stopPropagation();
-                onFocusNote(note.id);
-                }}
-                onChange={(event) =>
-                    onUpdateNote(note.id, {
-                    text: event.target.value,
-                })
-                }
-            />
-        </article>
+      <textarea
+        className="dynamic-textarea"
+        value={note.text}
+        placeholder="Type something..."
+        style={{
+          color: note.color.text,
+          backgroundColor: note.color.bg,
+        }}
+        onPointerDown={(event) => {
+          event.stopPropagation();
+          onFocusNote(note.id);
+        }}
+        onChange={(event) =>
+          onUpdateNote(note.id, {
+            text: event.target.value,
+          })
+        }
+      />
+    </article>
   );
 }

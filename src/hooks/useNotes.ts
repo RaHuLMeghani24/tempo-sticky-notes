@@ -43,6 +43,12 @@ export const useNotes = ({ getBoardWidth }: UseNotesOptions) => {
     );
   }, []);
 
+  const deleteNote = useCallback((noteId: string) => {
+    setNotes((previousNotes) =>
+      previousNotes.filter((note) => note.id !== noteId)
+    );
+  }, []);
+
   const bringNoteToFront = useCallback((noteId: string) => {
     setNotes((previousNotes) => {
       const highestZ =
@@ -60,6 +66,7 @@ export const useNotes = ({ getBoardWidth }: UseNotesOptions) => {
     notes,
     createNote,
     updateNote,
+    deleteNote,
     bringNoteToFront,
   };
 };
