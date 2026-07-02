@@ -1,11 +1,15 @@
+import Board from "./components/Board";
+import Toolbar from "./components/Toolbar";
 
-import './App.css'
+export default function App() {
+  const handleCreateNote = () => {
+    // TODO: Implement note creation logic here
+  };
 
-function App() {
- 
   return (
-     <></>
+    <div className="app-shell">
+      <Toolbar onCreate={handleCreateNote} />
+      <Board />
+    </div>
   );
 }
-
-export default App
